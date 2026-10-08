@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.jsonl
+state*.json
+.env
+profiles.txt

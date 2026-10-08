@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "17 5 * * 1"  # weekly: the live smoke test catches site drift
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.13", "3.14", "3.15"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync --locked
+      - run: uv run ruff check --select F,E9,E501 .
+      - run: uv run pytest -q
+
+  smoke:
+    # Network test against a sandbox built for crawling practice. Not on every
+    # push, so a slow third-party site cannot block a merge.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: "3.14"
+      - run: uv sync --locked
+      - name: HTTP crawl, 100 pages
+        run: |
+          uv run python crawler.py --backend http --workers 8 --per-host 8 \
+            --interval 0.2 --max-pages 100 --out books.jsonl | tee out.txt
+          tail -1 out.txt | python -c "import json,sys; d=json.load(sys.stdin); assert d['ok']==100 and d['records']>0, d"

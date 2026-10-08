@@ -1,0 +1,25 @@
+[project]
+name = "async-web-crawler"
+version = "1.0.0"
+description = "Companion code for 'How to Make a Web Crawler That Scales With Async Python'"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.13"
+dependencies = [
+    "aiohttp>=3.14",
+    "playwright>=1.60",
+    "protego>=0.7.0",
+    "psutil>=7",
+    "selectolax>=1.0",
+    "trafilatura>=2.2.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.16"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 79
