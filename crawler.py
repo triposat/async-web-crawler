@@ -747,7 +747,8 @@ async def main() -> None:
                     default="local")
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--profiles", default="", help="comma-separated IDs")
-    ap.add_argument("--tabs", type=int, default=4, help="tabs per profile")
+    ap.add_argument("--tabs", type=int, default=4,
+                    help="tabs per profile, or browser tabs for --escalate")
     ap.add_argument("--escalate", choices=["local", "gologin"],
                     help="http backend: retry app shells and blocked pages "
                          "in a browser")
