@@ -1,9 +1,7 @@
 # async-web-crawler
 
-Companion code for the article
-[How to Make a Web Crawler That Scales With Async Python](https://gologin.com/blog/how-to-make-a-web-crawler/).
-The article explains every design choice and shows the measurements. This repo
-is the runnable version.
+An asynchronous Python web crawler that fetches over HTTP first and uses a
+local or cloud browser only for the pages that need one.
 
 One asyncio process with:
 
