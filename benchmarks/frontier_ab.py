@@ -17,7 +17,7 @@ import crawler
 
 SEEDS = ["https://books.toscrape.com/", "https://quotes.toscrape.com/",
          "https://www.scrapethissite.com/pages/",
-         "https://webscraper.io/test-sites/e-commerce/allinone",
+         "https://docs.python.org/3/library/",
          "https://gologin.com/blog/"]
 
 
