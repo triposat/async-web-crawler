@@ -1,5 +1,6 @@
 """Preflight: does this browser tell one consistent story about itself?
 
+uv run python consistency.py local           # Playwright, unmodified
 uv run python consistency.py local-override  # Playwright, swapped User-Agent
 uv run python consistency.py gologin <profile_id>
 """
@@ -68,14 +69,15 @@ def contradictions(s: dict) -> list[str]:
 
 async def main() -> None:
     async with async_playwright() as pw:
-        if sys.argv[1] == "local-override":
+        if sys.argv[1] in ("local", "local-override"):
             # channel="chromium": the full browser, headless, instead of the
             # lighter headless shell
             browser = await pw.chromium.launch(channel="chromium",
                                                headless=True)
             ctx = await browser.new_context(user_agent=(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                "(KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36"))
+                "(KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36")
+                if sys.argv[1] == "local-override" else None)
         else:
             url = ("wss://cloudbrowser.gologin.com/connect?token="
                    f"{os.environ['GL_API_TOKEN']}&profile={sys.argv[2]}")

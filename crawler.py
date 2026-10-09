@@ -183,7 +183,7 @@ class Frontier:
                     continue
                 queue = self.queues[host]
                 if host in self.browser_hosts:
-                    queue[0].browser = True  # learned after it was queued
+                    queue[0].browser = True  # host moved to the browser later
                 if queue[0].browser:
                     if self.tabs == 0:
                         self.tab_waiting.add(host)  # waits for a tab
